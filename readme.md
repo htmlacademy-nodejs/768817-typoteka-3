@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Sergey Dmitriev](https://up.htmlacademy.ru/nodejs/3/user/768817).
-* Наставник: `Неизвестно`.
+* Наставник: [Владимир Коршунов](https://htmlacademy.ru/profile/id83596).
 
 ---
 
