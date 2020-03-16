@@ -2,8 +2,6 @@
 
 const chalk = require(`chalk`);
 
-const chalk = require(`chalk`);
-
 const getHelp = () => {
   const textHelp = `
   Программа запускает http-сервер и формирует файл с данными для API.
