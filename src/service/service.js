@@ -4,6 +4,7 @@ const {Cli} = require(`./cli`);
 const DEFAULT_COMMAND = `--help`;
 
 const USER_ARGV_INDEX = 2;
+const USER_ARGS_CUT_INDEX = 1;
 
 const ExitCode = {
   error: 1,
@@ -18,4 +19,4 @@ if (userArguments.length === 0 || !Cli[userCommand]) {
   process.exit(ExitCode.success);
 }
 
-Cli[userCommand].run(userArguments.slice(1));
+Cli[userCommand].run(userArguments.slice(USER_ARGS_CUT_INDEX));
