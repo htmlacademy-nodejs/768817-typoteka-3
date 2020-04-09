@@ -1,52 +1,32 @@
 'use strict';
 
-const http = require(`http`);
+const express = require(`express`);
 const fs = require(`fs`).promises;
-const FILE_NAME = `mocks.json`;
 
+const FILE_NAME = `mocks.json`;
 const DEFAULT_PORT = 3000;
 const HttpCodes = {
   OK: 200,
   NOT_FOUND: 404,
-};
-const NOT_FOUND_MSG = `Not found`;
-
-const sendResponse = (res, statusCode, message) => {
-  const template = `
-    <!Doctype html>
-      <html lang="ru">
-      <head>
-        <title>With love from Node</title>
-      </head>
-      <body>${message}</body>
-    </html>`.trim();
-
-  res.statusCode = statusCode;
-  res.writeHead(statusCode, {
-    'Content-Type': `text/html; charset=UTF-8`,
-  });
-
-  res.end(template);
+  INTERNAL_SERVER_ERROR: 500,
 };
 
-const onClientConnect = async (req, res) => {
-  switch (req.url) {
-    case `/`:
-      try {
-        const content = await fs.readFile(FILE_NAME);
-        const contentParsed = JSON.parse(content);
-        const message = contentParsed.map((item) => `<li>${item.title}</li>`).join(``);
-        sendResponse(res, HttpCodes.OK, `<ul>${message}</ul>`);
-      } catch (err) {
-        sendResponse(res, HttpCodes.NOT_FOUND, NOT_FOUND_MSG);
-      }
-      break;
+const app = express();
+app.use(express.json());
 
-    default:
-      sendResponse(res, HttpCodes.NOT_FOUND, NOT_FOUND_MSG);
-      break;
+app.get(`/posts`, async (req, res) => {
+  try {
+    const content = await fs.readFile(FILE_NAME);
+    const mocks = JSON.parse(content);
+    res.json(mocks);
+  } catch (err) {
+    res.send([]);
   }
-};
+});
+
+app.use((req, res) => res
+  .status(HttpCodes.NOT_FOUND)
+  .send(`Not found`));
 
 module.exports = {
   name: `--server`,
@@ -54,10 +34,6 @@ module.exports = {
     const [customPort] = args;
     const port = customPort || DEFAULT_PORT;
 
-    http.createServer(onClientConnect).listen(port).on(`listening`, (err) => {
-      if (err) {
-        console.error(`Ошибка при создании сервера`, err);
-      }
-    });
+    app.listen(port);
   }
 };
