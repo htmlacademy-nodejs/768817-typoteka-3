@@ -1,10 +1,10 @@
-GET http://localhost:3000/articles
+GET http://localhost:3000/api/articles
 
 ###
-GET http://localhost:3000/articles/fka1Dz
+GET http://localhost:3000/api/articles/fka1Dz
 
 ###
-POST http://localhost:3000/articles HTTP/1.1
+POST http://localhost:3000/api/articles HTTP/1.1
 content-type: application/json
 
 {
@@ -14,7 +14,7 @@ content-type: application/json
 }
 
 ###
-PUT http://localhost:3000/articles/fka1Dz HTTP/1.1
+PUT http://localhost:3000/api/articles/fka1Dz HTTP/1.1
 content-type: application/json
 
 {
@@ -24,16 +24,16 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3000/articles/fka1Dz
+DELETE http://localhost:3000/api/articles/fka1Dz
 
 ###
-GET http://localhost:3000/articles/fka1Dz/comments
+GET http://localhost:3000/api/articles/fka1Dz/comments
 
 ###
-DELETE http://localhost:3000/articles/7ce-Ud/comments/HJS24e
+DELETE http://localhost:3000/api/articles/7ce-Ud/comments/HJS24e
 
 ###
-POST http://localhost:3000/articles/fka1Dz/comments HTTP/1.1
+POST http://localhost:3000/api/articles/fka1Dz/comments HTTP/1.1
 content-type: application/json
 
 {
@@ -41,7 +41,7 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:3000/categories
+GET http://localhost:3000/api/categories
 
 ###
-GET http://localhost:3000/search?title=достигнуть
+GET http://localhost:3000/api/search?title=достигнуть

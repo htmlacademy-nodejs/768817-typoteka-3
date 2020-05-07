@@ -14,9 +14,9 @@ const {OK, BAD_REQUEST} = HttpCodes;
 
 const app = express();
 app.use(express.json());
-app.use(`/articles`, articlesRouter);
+app.use(`/api/articles`, articlesRouter);
 
-app.get(`/posts`, async (req, res) => {
+app.get(`/api/posts`, async (req, res) => {
   try {
     const content = await fs.readFile(FILE_NAME_MOCKS);
     const mocks = JSON.parse(content);
@@ -26,7 +26,7 @@ app.get(`/posts`, async (req, res) => {
   }
 });
 
-app.get(`/categories`, async (req, res) => {
+app.get(`/api/categories`, async (req, res) => {
   try {
     const categories = await readContent(FILE_CATEGORIES_PATH);
     return res.status(OK).json(categories);
@@ -35,7 +35,7 @@ app.get(`/categories`, async (req, res) => {
   }
 });
 
-app.get(`/search`, async (req, res) => {
+app.get(`/api/search`, async (req, res) => {
   try {
     const mocks = await getMocks();
     const queryParams = req.query;
