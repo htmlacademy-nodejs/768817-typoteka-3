@@ -1,37 +1,24 @@
 'use strict';
 
 const express = require(`express`);
-const fs = require(`fs`).promises;
 const {keys, includes} = require(`ramda`);
 
-const {FILE_NAME_MOCKS, FILE_CATEGORIES_PATH, HttpCodes} = require(`../../constants`);
+const {FILE_CATEGORIES_PATH, HttpCodes} = require(`../../constants`);
 const {readContent, getMocks} = require(`../../utils`);
 const articlesRouter = require(`./routes/articles`);
 const DEFAULT_PORT = 3000;
-
-const {OK, BAD_REQUEST} = HttpCodes;
 
 
 const app = express();
 app.use(express.json());
 app.use(`/api/articles`, articlesRouter);
 
-app.get(`/api/posts`, async (req, res) => {
-  try {
-    const content = await fs.readFile(FILE_NAME_MOCKS);
-    const mocks = JSON.parse(content);
-    res.json(mocks);
-  } catch (err) {
-    res.send([]);
-  }
-});
-
 app.get(`/api/categories`, async (req, res) => {
   try {
     const categories = await readContent(FILE_CATEGORIES_PATH);
-    return res.status(OK).json(categories);
+    return res.status(HttpCodes.OK).json(categories);
   } catch (err) {
-    return res.status(BAD_REQUEST).json([]);
+    return res.status(HttpCodes.BAD_REQUEST).json([]);
   }
 });
 
@@ -47,9 +34,9 @@ app.get(`/api/search`, async (req, res) => {
       let currentParam = queryKeys[i];
       filteredMocks = a.filter((item) => includes(queryParams[currentParam], item[currentParam]));
     }
-    return res.status(200).json(filteredMocks);
+    return res.status(HttpCodes.OK).json(filteredMocks);
   } catch (err) {
-    return res.status(400).json(`try again`);
+    return res.status(HttpCodes.BAD_REQUEST).json([]);
   }
 });
 
