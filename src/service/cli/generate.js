@@ -2,27 +2,35 @@
 
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
+const {nanoid} = require(`nanoid`);
 
+const {getRandomInt, shuffle} = require(`../../utils`);
 const {
-  getRandomInt,
-  shuffle,
-} = require(`../../utils`);
+  ID_LENGTH,
+  FILE_NAME_MOCKS,
+  FILE_TITLES_PATH,
+  FILE_CATEGORIES_PATH,
+  FILE_SETENCES_PATH,
+  FILE_COMMENTS_PATH,
+} = require(`../../constants`);
 
 const DEFAULT_AMOUNT = 1;
-const FILE_NAME = `mocks.json`;
 const MAX_OFFERS_COUNT = 1000;
 
-const FILE_SETENCES_PATH = `./src/data/sentences.txt`;
-const FILE_TITLES_PATH = `./src/data/titles.txt`;
-const FILE_CATEGORIES_PATH = `./src/data/categories.txt`;
 
-const generateOffers = (count, titles, sentences, categories) => (
+const getComment = (comments) => {
+  return shuffle(comments).join(` `);
+};
+
+const generateOffers = (count, titles, sentences, categories, comments) => (
   Array(count).fill({}).map(() => ({
+    id: nanoid(ID_LENGTH),
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: new Date(),
     announce: shuffle(sentences).slice(1, 5).join(` `),
     fullText: shuffle(sentences).join(` `),
     category: [categories[getRandomInt(0, categories.length - 1)]],
+    comments: Array(getRandomInt(0, 3)).fill({}).map(() => ({id: nanoid(ID_LENGTH), text: getComment(comments)}))
   }))
 );
 
@@ -48,9 +56,10 @@ module.exports = {
     const titles = await readContent(FILE_TITLES_PATH);
     const sentences = await readContent(FILE_SETENCES_PATH);
     const categories = await readContent(FILE_CATEGORIES_PATH);
-    const content = JSON.stringify(generateOffers(countOffer, titles, sentences, categories));
+    const comments = await readContent(FILE_COMMENTS_PATH);
+    const content = JSON.stringify(generateOffers(countOffer, titles, sentences, categories, comments));
     try {
-      await fs.writeFile(FILE_NAME, content);
+      await fs.writeFile(FILE_NAME_MOCKS, content);
       console.log(chalk.green(`Operation success. File created.`));
       return process.exit(0);
     } catch (err) {

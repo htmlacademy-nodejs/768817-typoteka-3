@@ -1,4 +1,6 @@
 'use strict';
+const fs = require(`fs`).promises;
+const {FILE_NAME_MOCKS} = require(`./constants`);
 
 module.exports.getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -13,4 +15,18 @@ module.exports.shuffle = (someArray) => {
   }
 
   return someArray;
+};
+
+module.exports.getMocks = async () => {
+  const content = await fs.readFile(FILE_NAME_MOCKS);
+  return JSON.parse(content);
+};
+
+module.exports.readContent = async (filePath) => {
+  try {
+    const content = await fs.readFile(filePath, `utf8`);
+    return content.split(`\n`);
+  } catch (err) {
+    return console.log(err);
+  }
 };

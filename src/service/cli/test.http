@@ -1,0 +1,47 @@
+GET http://localhost:3000/api/articles
+
+###
+GET http://localhost:3000/api/articles/fka1Dz
+
+###
+POST http://localhost:3000/api/articles HTTP/1.1
+content-type: application/json
+
+{
+    "title": "test",
+    "announce": "test",
+    "category": "test"
+}
+
+###
+PUT http://localhost:3000/api/articles/fka1Dz HTTP/1.1
+content-type: application/json
+
+{
+    "title": "test",
+    "announce": "test",
+    "category": "test"
+}
+
+###
+DELETE http://localhost:3000/api/articles/fka1Dz
+
+###
+GET http://localhost:3000/api/articles/fka1Dz/comments
+
+###
+DELETE http://localhost:3000/api/articles/7ce-Ud/comments/HJS24e
+
+###
+POST http://localhost:3000/api/articles/fka1Dz/comments HTTP/1.1
+content-type: application/json
+
+{
+  "text": "aaaa"
+}
+
+###
+GET http://localhost:3000/api/categories
+
+###
+GET http://localhost:3000/api/search?title=достигнуть
