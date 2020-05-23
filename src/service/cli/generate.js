@@ -39,7 +39,6 @@ const readContent = async (path) => {
     const content = await fs.readFile(path, `utf8`);
     return content.split(`\n`);
   } catch (err) {
-    console.error(chalk.red(err));
     return [];
   }
 };
@@ -47,7 +46,7 @@ const readContent = async (path) => {
 module.exports = {
   name: `--generate`,
   async run(args) {
-    const [count] = args;
+    const [count, preventExit] = args;
     if (count > MAX_OFFERS_COUNT) {
       console.error(chalk.red(`Не больше 1000 объявлений`));
       process.exit(1);
@@ -61,7 +60,7 @@ module.exports = {
     try {
       await fs.writeFile(FILE_NAME_MOCKS, content);
       console.log(chalk.green(`Operation success. File created.`));
-      return process.exit(0);
+      return !preventExit && process.exit(0);
     } catch (err) {
       console.error(chalk.red(`Can't write data to file...`));
       return process.exit(1);

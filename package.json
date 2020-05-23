@@ -4,10 +4,12 @@
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
-    "test": "npm run eslint",
+    "test": "npm run test::rest",
+    "test::rest": "jest --colors",
     "eslint": "eslint --ext .js src/",
     "start": "node ./src/service/service.js",
     "server": "nodemon ./src/service/service.js --server",
+    "start::debug": "cross-env LOG_LEVEL=debug npm run server",
     "start-front-server": "nodemon ./src/express/index.js"
   },
   "repository": {
@@ -23,12 +25,18 @@
   "devDependencies": {
     "eslint": "6.8.0",
     "eslint-config-htmlacademy": "0.5.2",
-    "nodemon": "2.0.2"
+    "jest": "26.0.1",
+    "nodemon": "2.0.2",
+    "npm-run-all": "^4.1.5",
+    "pino-pretty": "4.0.0",
+    "supertest": "4.0.2"
   },
   "dependencies": {
     "chalk": "3.0.0",
+    "cross-env": "7.0.2",
     "express": "4.17.1",
     "nanoid": "3.1.3",
+    "pino": "6.2.1",
     "pug": "2.0.4",
     "ramda": "0.27.0"
   }

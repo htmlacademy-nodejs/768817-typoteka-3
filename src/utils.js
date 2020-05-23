@@ -17,7 +17,7 @@ module.exports.shuffle = (someArray) => {
   return someArray;
 };
 
-module.exports.getMocks = async () => {
+module.exports.getData = async () => {
   const content = await fs.readFile(FILE_NAME_MOCKS);
   return JSON.parse(content);
 };
