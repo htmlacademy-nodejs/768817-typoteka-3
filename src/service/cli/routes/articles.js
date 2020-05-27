@@ -38,6 +38,7 @@ articlesRouter.get(`/:articleId`, async (req, res) => {
 
 articlesRouter.post(`/`, async (req, res) => {
   logger.info(`End request with status code ${res.statusCode}`);
+  logger.info(`req.body:`, req.body);
   try {
     const {title, announce, category, comments, fullText} = req.body;
     if (any(isNil)([title, announce, category])) {
