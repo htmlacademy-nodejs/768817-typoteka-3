@@ -1,15 +1,17 @@
 'use strict';
 
 const {Router} = require(`express`);
-const express = require(`express`);
+const multer = require(`multer`);
+
 const request = require(`request-promise-native`);
 const url = `http://localhost:3000/api/articles/`;
 
 const articlesRouter = new Router();
-articlesRouter.use(express.urlencoded({extended: false}));
+const upload = multer({dest: `./avatars/`});
 
-articlesRouter.post(`/add`, (req, res) => {
-  console.log(req.body);
+articlesRouter.post(`/add`, upload.any(), (req, res) => {
+  console.log(`req.body`, req.body);
+  res.redirect(`/articles/add`);
 });
 
 articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles-by-category`));
