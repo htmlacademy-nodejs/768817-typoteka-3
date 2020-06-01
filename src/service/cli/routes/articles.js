@@ -37,10 +37,11 @@ articlesRouter.get(`/:articleId`, async (req, res) => {
 });
 
 articlesRouter.post(`/`, async (req, res) => {
-  logger.info(`End request with status code ${res.statusCode}`);
-  logger.info(`req.body:`, req.body);
+  logger.info(`End POST request with status code ${res.statusCode}`);
   try {
     const {title, announce, category, comments, fullText} = req.body;
+    console.log(`req.body,`, req.body);
+
     if (any(isNil)([title, announce, category])) {
       return res.status(HttpCodes.BAD_REQUEST).json([]);
     }

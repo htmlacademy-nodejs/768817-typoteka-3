@@ -23,14 +23,14 @@ block content
                     input(type='text' name='title' placeholder='Заголовок' value='Как правильно заводить машину' required)
                 .form__field.form__field--post-image
                   label
-                    input#image-name-field(type='text' name='photo' value='moya_mashinka.jpg' placeholder='Фотография' readonly)
+                    input#image-name-field(type='text' name='fileName' value='moya_mashinka.jpg' placeholder='Фотография' readonly)
                   .form__image-loader.form__image-loader--publication
                     label
-                      input.visually-hidden(type='file')
+                      input.visually-hidden(name='image' type='file')
                       | Обзор
                   button.button.button--transparent Удалить
                 .new-publication__checkbox.new-publication__checkbox--auto
-                  input#checkbox-auto(type='checkbox' name='checkbox-auto')
+                  input#checkbox-auto(type='checkbox' name='categories[автомобили]')
                   label(for='checkbox-auto') Автомобили
                 a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
               .form__wrapper.form__wrapper--text

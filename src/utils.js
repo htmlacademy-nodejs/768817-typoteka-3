@@ -30,3 +30,9 @@ module.exports.readContent = async (filePath) => {
     return console.log(err);
   }
 };
+
+module.exports.getUrl = (baseUrl, endPoint = ``) => {
+  const url = `${baseUrl}${endPoint}`;
+  console.log(`url`, url);
+  return url;
+};

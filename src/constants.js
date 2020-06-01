@@ -14,3 +14,6 @@ module.exports.FILE_SETENCES_PATH = `./src/data/sentences.txt`;
 module.exports.FILE_TITLES_PATH = `./src/data/titles.txt`;
 module.exports.FILE_CATEGORIES_PATH = `./src/data/categories.txt`;
 module.exports.FILE_COMMENTS_PATH = `./src/data/categories.txt`;
+
+module.exports.BASE_URL_EXPRESS = `http://localhost:8080/`;
+module.exports.BASE_URL_SERVICE = `http://localhost:3000/`;
