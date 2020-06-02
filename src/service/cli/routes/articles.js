@@ -2,7 +2,7 @@
 
 const {Router} = require(`express`);
 const {nanoid} = require(`nanoid`);
-const {find, propEq, any, isNil} = require(`ramda`);
+const {find, propEq, any, isNil, pathOr, slice} = require(`ramda`);
 
 const {getData} = require(`../../../utils`);
 const {HttpCodes, ID_LENGTH} = require(`../../../constants`);
@@ -15,7 +15,8 @@ articlesRouter.get(`/`, async (req, res) => {
   logger.info(`End request with status code ${res.statusCode}`);
   try {
     const mocks = await getData();
-    return res.status(HttpCodes.OK).json(mocks);
+    const size = pathOr(null, [`query`, `size`], req);
+    return size ? res.status(HttpCodes.OK).json(slice(0, size, mocks)) : res.status(HttpCodes.OK).json(mocks);
   } catch (err) {
     return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json([]);
   }
@@ -23,12 +24,13 @@ articlesRouter.get(`/`, async (req, res) => {
 
 articlesRouter.get(`/:articleId`, async (req, res) => {
   logger.info(`End request with status code ${res.statusCode}`);
+  let article = {};
   try {
     const mocks = await getData();
     const {articleId} = req.params;
-    const article = find(propEq(`id`, articleId))(mocks);
+    article = find(propEq(`id`, articleId))(mocks);
     if (isNil(article)) {
-      return res.status(HttpCodes.NOT_FOUND).json({});
+      return res.status(HttpCodes.NOT_FOUND).json(article);
     }
     return res.status(HttpCodes.OK).json(article);
   } catch (err) {
