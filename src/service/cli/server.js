@@ -5,7 +5,7 @@ const {keys, includes, isNil, isEmpty} = require(`ramda`);
 
 const {FILE_CATEGORIES_PATH, HttpCodes} = require(`../../constants`);
 const {readContent, getData} = require(`../../utils`);
-const articlesRouter = require(`./routes/articles`);
+const articlesRouter = require(`../api/routes/articles`);
 const {getLogger} = require(`../../logger`);
 const DEFAULT_PORT = 3000;
 
