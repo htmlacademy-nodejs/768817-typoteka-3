@@ -6,6 +6,7 @@ const request = require(`request-promise-native`);
 
 const {getUrl} = require(`../../utils`);
 const {articlesList, BASE_URL_SERVICE} = require(`../../endPoints`);
+const {HttpCodes} = require(`../../constants`);
 
 const myRouter = new Router();
 
@@ -16,7 +17,7 @@ myRouter.get(`/`, async (req, res) => {
     return res.render(`my`, {articles});
   } catch (err) {
     console.error(`error`, err);
-    return res.render(`my`, {articles});
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({message: `Something went wrong`});
   }
 });
 
@@ -36,7 +37,7 @@ myRouter.get(`/comments`, async (req, res) => {
     return res.render(`comments`, {comments});
   } catch (err) {
     console.error(`error`, err);
-    return res.render(`comments`, {comments});
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({message: `Something went wrong`});
   }
 });
 

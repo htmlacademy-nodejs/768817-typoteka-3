@@ -1,5 +1,5 @@
 'use strict';
-
+const {nanoid} = require(`nanoid`);
 const {Router} = require(`express`);
 const multer = require(`multer`);
 const path = require(`path`);
@@ -7,20 +7,24 @@ const path = require(`path`);
 const request = require(`request-promise-native`);
 const {getUrl} = require(`../../utils`);
 const {articlesList, articleItem, BASE_URL_SERVICE} = require(`../../endPoints`);
+const {HttpCodes} = require(`../../constants`);
 
 const articlesRouter = new Router();
 
+const UPLOAD_DIR = `../upload/img/`;
+const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
+
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, `./avatars`);
-  },
-  filename(req, file, cb) {
-    cb(null, file.fieldname + `-` + Date.now() + path.extname(file.originalname));
+  destination: uploadDirAbsolute,
+  filename: (req, file, cb) => {
+    const uniqueName = nanoid(10);
+    const extension = file.originalname.split(`.`).pop();
+    cb(null, `${uniqueName}.${extension}`);
   }
 });
 const upload = multer({storage});
 
-articlesRouter.post(`/add`, upload.any(), async (req, res) => {
+articlesRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
   try {
     const {categories} = req.body;
     const body = {
@@ -52,7 +56,7 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
     article = await request(getUrl(BASE_URL_SERVICE, articleItem(id)), {json: true});
     return res.render(`post`, {article});
   } catch (err) {
-    return res.render(`post`, {article});
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({message: `Something went wrong`});
   }
 });
 articlesRouter.get(`/:id`, (req, res) => res.render(`post`));
