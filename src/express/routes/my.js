@@ -1,9 +1,44 @@
 'use strict';
 
 const {Router} = require(`express`);
+const {concat} = require(`ramda`);
+const request = require(`request-promise-native`);
+
+const {getUrl} = require(`../../utils`);
+const {articlesList, BASE_URL_SERVICE} = require(`../../endPoints`);
+const {HttpCodes} = require(`../../constants`);
+
 const myRouter = new Router();
 
-myRouter.get(`/`, (req, res) => res.render(`my`));
-myRouter.get(`/comments`, (req, res) => res.render(`comments`));
+myRouter.get(`/`, async (req, res) => {
+  let articles = [];
+  try {
+    articles = await request(getUrl(BASE_URL_SERVICE, articlesList), {json: true});
+    return res.render(`my`, {articles});
+  } catch (err) {
+    console.error(`error`, err);
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({message: `Something went wrong`});
+  }
+});
+
+myRouter.get(`/comments`, async (req, res) => {
+  let articles = [];
+  let comments = [];
+
+  try {
+    const options = {
+      qs: {size: 3},
+      json: true
+    };
+    articles = await request(getUrl(BASE_URL_SERVICE, articlesList), options);
+    articles.map((item) => {
+      comments = concat(comments, item.comments);
+    });
+    return res.render(`comments`, {comments});
+  } catch (err) {
+    console.error(`error`, err);
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({message: `Something went wrong`});
+  }
+});
 
 module.exports = myRouter;

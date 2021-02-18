@@ -1,18 +1,29 @@
 'use strict';
 
 const express = require(`express`);
-const {keys, includes} = require(`ramda`);
+const {keys, includes, isNil, isEmpty} = require(`ramda`);
 
 const {FILE_CATEGORIES_PATH, HttpCodes} = require(`../../constants`);
 const {readContent, getData} = require(`../../utils`);
-const articlesRouter = require(`./routes/articles`);
+const articlesRouter = require(`../api/routes/articles`);
 const {getLogger} = require(`../../logger`);
 const DEFAULT_PORT = 3000;
 
 const logger = getLogger();
-
-
 const app = express();
+
+const checkArticles = async () => {
+  try {
+    const articles = await getData();
+    if (isNil(articles) || isEmpty(articles)) {
+      return logger.warn(`There are no articles in store. We recomend you call command: "npm start -- --generate [articles count]" before start the server`);
+    }
+    return logger.info(`Current number of articles in store: ${articles.length}`);
+  } catch (err) {
+    return logger.warn(`There are no articles in store. We recomend you call command: "npm start -- --generate [articles count]" then restart the server`);
+  }
+};
+
 app.use(express.json());
 app.use((req, res, next) => {
   logger.debug(`Start request to url: ${req.url}`);
@@ -63,11 +74,12 @@ module.exports = {
     const [customPort] = args;
     const port = customPort || DEFAULT_PORT;
 
+    checkArticles();
     app.listen(port)
     .on(`error`, (err) => {
       logger.error(`Server can't start. Error: ${err}`);
     });
-    logger.info(`server start on ${port}`);
+    logger.info(`server starts on: localhost:${port}`);
     logger.info(`LOG_LEVEL value is ${process.env.LOG_LEVEL}`);
   },
   app

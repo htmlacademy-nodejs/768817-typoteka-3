@@ -1,8 +1,8 @@
 'use strict';
 const request = require(`supertest`);
 
-const {app} = require(`../server`);
-const {run} = require(`../generate`);
+const {app} = require(`../../cli/server`);
+const {run} = require(`../../cli/generate`);
 const {pathOr, isEmpty} = require(`ramda`);
 const {getData} = require(`../../../utils`);
 const {HttpCodes} = require(`../../../constants`);
@@ -31,11 +31,11 @@ describe(`describes articles router end-points`, () => {
     done();
   });
 
-  test(`GET /api/articles/:articleId should return 404 and {}`, async (done) => {
+  test(`GET /api/articles/:articleId should return 404 and empty string`, async (done) => {
     const articleId = 1234565;
     const res = await request(app).get(`/api/articles/${articleId}`);
     expect(res.statusCode).toBe(HttpCodes.NOT_FOUND);
-    expect(res.body).toEqual({});
+    expect(res.body).toEqual(``);
     done();
   });
 
